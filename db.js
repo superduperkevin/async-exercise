@@ -15,13 +15,56 @@ ex after running delete('user.json'):
 
 Errors should also be logged (preferably in a human-readable format)
 */
+function log(value) {
+  return fs.appendFile('log.txt', `${value} ${Date.now()}\n`);
+}
+// async await
+// async await
+// async await
+
+async function get(file, key) {
+  try {
+    // 1. read file
+    // 2. handle promise --> data
+    const data = await fs.readFile('file', 'utf-8');
+    // 3. parse data from string --> JSON
+    const parsed = JSON.parse(data);
+    // 4. use the key to get the value fo object[key]
+    const value = parsed[key];
+    // 5. append the log file with the above value
+    if (!value) return log(`ERROR ${key} invalid key on ${file}`);
+    return log(value);
+  } catch (err) {
+    log(`ERROR no such file or directory ${file}`);
+  }
+}
 
 /**
  * Logs the value of object[key]
  * @param {string} file
  * @param {string} key
  */
-function get(file, key) {}
+// promise solution
+// promise solution
+// promise solution
+
+function get(file, key) {
+  // 1. read file
+  // 2. handle promise --> data
+  return fs
+    .readFile(file, 'utf-8')
+    .then(data => {
+      // 3. parse data from string --> JSON
+      const parsed = JSON.parse(data);
+      // 4. use the key to the value at object[key]
+      const value = parsed[key];
+      if (!value) return log(`ERROR ${key} invalid key on ${file}`);
+      // 5. append the log file with the above value
+      return log(value);
+    })
+    .catch(err => log(`ERROR no such file or directory ${file}`));
+}
+// const numHarrys = .match(/Harry/g).length; // count the harrys
 
 /**
  * Sets the value of object[key] and rewrites object to file
