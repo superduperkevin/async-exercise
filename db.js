@@ -18,26 +18,26 @@ Errors should also be logged (preferably in a human-readable format)
 function log(value) {
   return fs.appendFile('log.txt', `${value} ${Date.now()}\n`);
 }
-// async await
-// async await
-// async await
+// async await solution
+// async await solution
+// async await solution
 
-async function get(file, key) {
-  try {
-    // 1. read file
-    // 2. handle promise --> data
-    const data = await fs.readFile('file', 'utf-8');
-    // 3. parse data from string --> JSON
-    const parsed = JSON.parse(data);
-    // 4. use the key to get the value fo object[key]
-    const value = parsed[key];
-    // 5. append the log file with the above value
-    if (!value) return log(`ERROR ${key} invalid key on ${file}`);
-    return log(value);
-  } catch (err) {
-    log(`ERROR no such file or directory ${file}`);
-  }
-}
+// async function get(file, key) {
+//   try {
+//     // 1. read file
+//     // 2. handle promise --> data
+//     const data = await fs.readFile('file', 'utf-8');
+//     // 3. parse data from string --> JSON
+//     const parsed = JSON.parse(data);
+//     // 4. use the key to get the value fo object[key]
+//     const value = parsed[key];
+//     // 5. append the log file with the above value
+//     if (!value) return log(`ERROR ${key} invalid key on ${file}`);
+//     return log(value);
+//   } catch (err) {
+//     log(`ERROR no such file or directory ${file}`);
+//   }
+// }
 
 /**
  * Logs the value of object[key]
