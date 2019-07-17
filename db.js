@@ -15,6 +15,13 @@ ex after running delete('user.json'):
 
 Errors should also be logged (preferably in a human-readable format)
 */
+
+/**
+ * Logs the value of object[key]
+ * @param {string} file
+ * @param {string} key
+ */
+
 function log(value) {
   return fs.appendFile('log.txt', `${value} ${Date.now()}\n`);
 }
@@ -39,11 +46,6 @@ function log(value) {
 //   }
 // }
 
-/**
- * Logs the value of object[key]
- * @param {string} file
- * @param {string} key
- */
 // promise solution
 // promise solution
 // promise solution
@@ -72,28 +74,72 @@ function get(file, key) {
  * @param {string} key
  * @param {string} value
  */
-function set(file, key, value) {}
+
+// set function with promises
+
+function set(file, key, value) {
+  if (value) {
+    return fs
+      .readFile(file, 'utf-8')
+      .then(data => {
+        const parsed = JSON.parse(data);
+        // console.log(keyvalue);
+        parsed[key] = value;
+        fs.writeFile(file, JSON.stringify(parsed));
+        return log(parsed[key]);
+
+        // 1. read file
+        // 2. handle promise --> data
+        // 3. rewrite object to file
+      })
+      .catch(err => log(`ERROR no such file or directory ${file}`));
+  }
+  return log(`ERROR value missing`);
+}
 
 /**
  * Deletes key from object and rewrites object to file
  * @param {string} file
  * @param {string} key
  */
-function remove(file, key) {}
+function remove(file, key) {
+  if (key) {
+    return fs
+      .readFile(file, 'utf-8')
+      .then(data => {
+        const parsed = JSON.parse(data);
+        delete parsed[key];
+        fs.writeFile(file, JSON.stringify(parsed));
+        return log(parsed[key]);
+      })
+      .catch(err => log(`ERROR no such file or directory ${file}`));
+  }
+  return log(`ERROR key missing`);
+}
 
 /**
  * Deletes file.
  * Gracefully errors if the file does not exist.
  * @param {string} file
  */
-function deleteFile(file) {}
+function deleteFile(file) {
+  if (file) {
+    return fs.unlink(`${file}`);
+  }
+  return log(`ERROR invalid file`);
+}
 
 /**
  * Creates file with an empty object inside.
  * Gracefully errors if the file already exists.
  * @param {string} file JSON filename
  */
-function createFile(file) {}
+function createFile(file) {
+  if (!file) {
+    return fs.appendFile(file.pop());
+  }
+  return log(`ERROR file already exists`);
+}
 
 /**
  * Merges all data into a mega object and logs it.
@@ -113,7 +159,11 @@ function createFile(file) {}
  *    }
  * }
  */
-function mergeData() {}
+function mergeData() {
+  // // 2.
+  // return fs.
+  //   fileA.filter(file => )
+}
 
 /**
  * Takes two files and logs all the properties as a list without duplicates
